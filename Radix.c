@@ -20,7 +20,7 @@ void insertFirst(nodePtr *A, int x){
 }
 
 void insertLast(nodePtr *A, nodePtr temp){
-    if(*A == NULL){
+	if(*A == NULL){
         temp->next = NULL;
         *A = temp;
     } else {
