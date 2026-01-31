@@ -19,64 +19,55 @@ void insertFirst(nodePtr *A, int x){
 	}
 }
 
-void insertLast(nodePtr *A, nodePtr temp){
-	if(*A == NULL){
-        temp->next = NULL;
-        *A = temp;
-    } else {
-        nodePtr trav;
-        for(trav = *A; trav->next != NULL; trav = trav->next){}
-        temp->next = NULL;
-        trav->next = temp;
-    }
-}
-
 void displayList(nodePtr A){
 	for(; A != NULL; A = A->next){
 		printf("%d ", A->data);
 	}
 }
 
-int getMax(nodePtr A){
-    int max = 0;
-    for(; A != NULL; A = A->next){
-        if(A->data > max){
-            max = A->data;
-        }
-    }
-    return max;
+void insertLast(nodePtr *A, nodePtr temp){
+    nodePtr *trav;
+    for(trav = A; *trav != NULL; trav = &(*trav)->next){}
+    temp->next = NULL;
+    *trav = temp;
 }
 
 void radixSort(nodePtr *A){
-    int max = getMax(*A);
+	
+ 	int max = (*A)->data;
+ 	nodePtr trav = *A;
+	for(; trav != NULL; trav = trav->next){
+		if(trav->data > max){
+			max = (*A)->data;
+		}
+	}
+	
+	for(int exp = 1; max / exp > 0; exp *= 10){
+		nodePtr buckets[10];
+		for(int i = 0; i < 10; i++){
+			init(&buckets[i]);
+		}
 
-    for(int exp = 1; max / exp > 0; exp *= 10){
+		nodePtr curr = *A;
+		for(; curr != NULL; ){
+    		nodePtr temp = curr;
+    		curr = curr->next;
 
-        nodePtr bucket[10];
-        for(int i = 0; i < 10; i++){
-            bucket[i] = NULL;
-        }
+    		int digit = (temp->data / exp) % 10;
+    		insertLast(&buckets[digit], temp);
+		}
+		
+		*A = NULL;
+		nodePtr *rebuild = A;
+		for(int i = 0; i < 10; i++){
+			if(buckets[i] != NULL){
+				*rebuild = buckets[i];
+				for(; (*rebuild)->next != NULL; rebuild = &(*rebuild)->next){}
+				rebuild = &(*rebuild)->next;
+			}
+		}
 
-        nodePtr trav = *A;
-        for(; trav != NULL; ){
-            nodePtr temp = trav;
-            trav = trav->next;
-
-            int digit = (temp->data / exp) % 10;
-            insertLast(&bucket[digit], temp);
-        }
-
-        *A = NULL;
-        nodePtr *tail = A;
-
-        for(int i = 0; i < 10; i++){
-            if(bucket[i] != NULL){
-                *tail = bucket[i];
-                for(; (*tail)->next != NULL; tail = &(*tail)->next){}
-                tail = &(*tail)->next;
-            }
-        }
-    }
+	}
 }
 
 int main() {
@@ -89,6 +80,10 @@ int main() {
     insertFirst(&main, 39);
     insertFirst(&main, 259);
     
+    printf("Not Sorted:\n");
+    displayList(main);
+    
+    printf("\nRadix Sorted:\n");
     radixSort(&main);
     displayList(main);
     
