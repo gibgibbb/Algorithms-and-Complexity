@@ -56,6 +56,18 @@ void radixSort(nodePtr *A){
     		int digit = (temp->data / exp) % 10;
     		insertLast(&buckets[digit], temp);
 		}
+
+		nodePtr *trav, temp;
+		for(trav = A; *trav != NULL;){
+			temp = *trav;
+			*trav = (*trav)->next;
+			
+			int digit = (temp->data / exp) % 10;
+			nodePtr *trav2;
+			for(trav2 = &buckets[digit]; *trav2 != NULL; trav2 = &(*trav2)->next){}
+			temp->next = NULL;
+			*trav2 = temp;
+		}
 		
 		*A = NULL;
 		nodePtr *rebuild = A;
