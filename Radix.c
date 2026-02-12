@@ -48,15 +48,17 @@ void radixSort(nodePtr *A){
 			init(&buckets[i]);
 		}
 
-		nodePtr curr = *A;
-		for(; curr != NULL; ){
-    		nodePtr temp = curr;
-    		curr = curr->next;
+// Version 1 Pointer to node
+//		nodePtr curr = *A;
+//		for(; curr != NULL; ){
+//    		nodePtr temp = curr;
+//    		curr = curr->next;
+//
+//    		int digit = (temp->data / exp) % 10;
+//    		insertLast(&buckets[digit], temp);
+//		}
 
-    		int digit = (temp->data / exp) % 10;
-    		insertLast(&buckets[digit], temp);
-		}
-
+// Version 2 PPN
 		nodePtr *trav, temp;
 		for(trav = A; *trav != NULL;){
 			temp = *trav;

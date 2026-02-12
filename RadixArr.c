@@ -63,11 +63,11 @@ int main (){
 	ListArr R;
 	init(&R);
 	
-	insertLast(&R, 2);
-	insertLast(&R, 62);
-	insertLast(&R, 135);
-	insertLast(&R, 20);
-	insertLast(&R, 104);
+//	insertLast(&R, 2);
+//	insertLast(&R, 62);
+//	insertLast(&R, 135);
+//	insertLast(&R, 20);
+//	insertLast(&R, 104);
 	
 	display(R);
 	printf("\n");
