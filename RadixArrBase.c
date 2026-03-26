@@ -1,46 +1,90 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void radixSort(int arr[], int size);
+void radixSort(int arr[], int n);
 
-void radixSort(int arr[], int size){
-	int x;
-	int max = arr[0];
-	for(x = 1; x < size; x++){
-		if(arr[x] > max){
-			max = arr[x];
-		}
-	}
+void radixSort(int arr[], int n){
+    int i;
 
-	for(int exp = 1; max / exp > 0; exp *= 10){
-		int output[size];
-		int count[10] = {0};
+    /* ---------------------------
+       STEP 1: Find minimum value
+    ----------------------------*/
+    int min = arr[0];
+    for(i = 1; i < n; i++){
+        if(arr[i] < min){
+            min = arr[i];
+        }
+    }
 
-		for(x = 0; x < size; x++){
-			int digit = (arr[x] / exp) % 10;
-			count[digit]++;
-		}
+    /* ---------------------------
+       STEP 2: Shift if negative
+    ----------------------------*/
+    int shift = 0;
+    if(min < 0){
+        shift = -min;
+        for(i = 0; i < n; i++){
+            arr[i] += shift;
+        }
+    }
 
-		for(x = 1; x < 10; x++){
-			count[x] += count[x - 1];
-		}
+    /* ---------------------------
+       STEP 3: Find maximum value
+       (after shifting)
+    ----------------------------*/
+    int max = arr[0];
+    for(i = 1; i < n; i++){
+        if(arr[i] > max){
+            max = arr[i];
+        }
+    }
 
-		for(x = size - 1; x >= 0; x--){
-			int digit = (arr[x] / exp) % 10;
-			output[count[digit] - 1] = arr[x];
-			count[digit]--;
-		}
+    /* ---------------------------
+       STEP 4: Standard Radix Sort
+    ----------------------------*/
+    for(int exp = 1; max / exp > 0; exp *= 10){
 
-		for(x = 0; x < size; x++){
-			arr[x] = output[x];
-		}
-	}
+        int output[n];
+        int count[10] = {0};
+
+        /* Count digit occurrences */
+        for(i = 0; i < n; i++){
+            int digit = (arr[i] / exp) % 10;
+            count[digit]++;
+        }
+
+        /* Convert to cumulative count */
+        for(i = 1; i < 10; i++){
+            count[i] += count[i - 1];
+        }
+
+        /* Build output array (stable) */
+        for(i = n - 1; i >= 0; i--){
+            int digit = (arr[i] / exp) % 10;
+            output[count[digit] - 1] = arr[i];
+            count[digit]--;
+        }
+
+        /* Copy back */
+        for(i = 0; i < n; i++){
+            arr[i] = output[i];
+        }
+    }
+
+    /* ---------------------------
+       STEP 5: Shift back
+    ----------------------------*/
+    if(shift != 0){
+        for(i = 0; i < n; i++){
+            arr[i] -= shift;
+        }
+    }
 }
+
 int main(){
 	
 
 	
-	int arr[10] = {21, 54, 3, 10, 12, 42, 39, 19, 75, 4};
+	int arr[10] = {21, 54, -3, 10, -12, 142, 139, -19, 75, 214};
 	int size = sizeof(arr)/sizeof(arr[0]);
 	
 	printf("Unsorted\n");
