@@ -2,8 +2,6 @@
 #include <stdlib.h>
 
 void bubbleSort(int arr[], int n);
-
-
 void displaySorted(int arr[], int n);
 
 void bubbleSort(int arr[], int n){
@@ -24,7 +22,6 @@ void displaySorted(int arr[], int n){
 	}
 }
 	
-
 int main(){
 	
 	int arr[5] = {29, 3, 10, 45, 11};
