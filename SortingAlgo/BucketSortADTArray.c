@@ -19,35 +19,44 @@ void insertFirst(arrSort *a, int val){
 	}
 }
 
-void countingSort(arrSort *a){
+void bucketSort(arrSort *a){
 	int max = a->data[0];
-	for(int i = 0; i < a->count; i++){
+	for(int i = 0; i < a->count + 1; i++){
 		if(max < a->data[i]){
 			max = a->data[i];
 		}
 	}
-	int count[max + 1];
-	int output[a->count + 1];
 	
-	for(int i = 0; i <= max; i++){
-		count[i] = 0;
-	}
-
-	for(int i = 0; i < a->count + 1; i++){
-		count[a->data[i]]++;
-	}
-	
-	for(int i = 1; i <= max; i++){
-		count[i] += count[i - 1];
-	}
-	
-	for(int i = a->count; i >= 0; i--){
-		output[count[a->data[i]] - 1] = a->data[i];
-		count[a->data[i]]--;
+	int bucket[10][a->count + 1];
+	int bucketCount[10];
+	for(int i = 0; i < 10; i++){
+		bucketCount[i] = 0;
 	}
 	
 	for(int i = 0; i < a->count + 1; i++){
-		a->data[i] = output[i];
+		int bIdx = (a->data[i] * 9) / max;
+		bucket[bIdx][bucketCount[bIdx]] = a->data[i];
+		bucketCount[bIdx]++;
+	}
+	
+	for(int i = 0; i < 10; i++){
+		int count = bucketCount[i];
+		for(int j = 0; j < a->count - 1; j++){
+			for(int k = 0; k < count - j - 1; k++){
+				if(bucket[i][k] > bucket[i][k + 1]){
+					int temp = bucket[i][k];
+					bucket[i][k] = bucket[i][k + 1];
+					bucket[i][k + 1] = temp;
+				}
+			}
+		}
+	}
+	int idx = 0;
+	for(int i = 0; i < 10; i++){
+		for(int j = 0; j < bucketCount[i]; j++){
+			a->data[idx] = bucket[i][j	];
+			idx++;
+		}
 	}
 }
 
@@ -75,7 +84,7 @@ int main(){
 	for(int i = 0; i < arr.count + 1; i++){
 		printf("%d ", arr.data[i]);
 	}
-	countingSort(&arr);
+	bucketSort(&arr);
 	printf("\nSorted arr:\n");
 	displaySorted(arr);
 
