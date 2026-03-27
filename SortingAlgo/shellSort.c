@@ -10,6 +10,7 @@ void shellSort(int arr[], int size){
 			}
 			arr[j] = temp;
 		}
+		printf("%d\n", gap);
 	}
 }
 
