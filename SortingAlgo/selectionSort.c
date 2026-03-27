@@ -9,9 +9,9 @@ void selectionSort(int arr[], int size){
 			}
 		}
 		if(min != i){
-			int temp = arr[min];
-			arr[min] = arr[i];
-			arr[i] = temp;
+			int temp = arr[i];
+			arr[i] = arr[min];
+			arr[min] = temp;
 		}
 	}
 }
