@@ -16,11 +16,11 @@ void bubbleSort(int arr[], int n){
 	}
 }
 
-void displaySorted(int arr[], int n){
-	for(int i = 0; i < n; i++){
-		printf("%d ", arr[i]);
-	}
-}
+//void displaySorted(int arr[], int n){
+//	for(int i = 0; i < n; i++){
+//		printf("%d ", arr[i]);
+//	}
+//}
 	
 int main(){
 	
@@ -28,7 +28,7 @@ int main(){
 	int size = sizeof(arr)/sizeof(arr[0]);
 	
 	bubbleSort(arr, size);
-	displaySorted(arr, size);
+//	displaySorted(arr, size);
 	
 	return 0;
 }
